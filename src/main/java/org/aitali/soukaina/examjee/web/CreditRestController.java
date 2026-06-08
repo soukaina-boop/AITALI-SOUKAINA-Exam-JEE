@@ -1,5 +1,6 @@
 package org.aitali.soukaina.examjee.web;
 
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.aitali.soukaina.examjee.dtos.CreditDTO;
 import org.aitali.soukaina.examjee.dtos.RemboursementDTO;
@@ -22,6 +23,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/credits")
 @Tag(name = "Credits", description = "Gestion des credits bancaires")
+@SecurityRequirement(name = "bearerAuth")
 public class CreditRestController {
 
     private final CreditBancaireService creditBancaireService;

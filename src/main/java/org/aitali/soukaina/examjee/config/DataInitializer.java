@@ -1,43 +1,57 @@
 package org.aitali.soukaina.examjee.config;
 
+import org.aitali.soukaina.examjee.entities.AppUser;
 import org.aitali.soukaina.examjee.entities.Client;
 import org.aitali.soukaina.examjee.entities.Credit;
 import org.aitali.soukaina.examjee.entities.CreditImmobilier;
 import org.aitali.soukaina.examjee.entities.CreditPersonnel;
 import org.aitali.soukaina.examjee.entities.CreditProfessionnel;
 import org.aitali.soukaina.examjee.entities.Remboursement;
+import org.aitali.soukaina.examjee.entities.Role;
 import org.aitali.soukaina.examjee.entities.StatutCredit;
 import org.aitali.soukaina.examjee.entities.TypeBien;
 import org.aitali.soukaina.examjee.entities.TypeRemboursement;
+import org.aitali.soukaina.examjee.repositories.AppUserRepository;
 import org.aitali.soukaina.examjee.repositories.ClientRepository;
 import org.aitali.soukaina.examjee.repositories.CreditRepository;
 import org.aitali.soukaina.examjee.repositories.RemboursementRepository;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Component
 public class DataInitializer implements CommandLineRunner {
 
+    private final AppUserRepository appUserRepository;
     private final ClientRepository clientRepository;
     private final CreditRepository creditRepository;
     private final RemboursementRepository remboursementRepository;
+    private final PasswordEncoder passwordEncoder;
 
     public DataInitializer(
+            AppUserRepository appUserRepository,
             ClientRepository clientRepository,
             CreditRepository creditRepository,
-            RemboursementRepository remboursementRepository
+            RemboursementRepository remboursementRepository,
+            PasswordEncoder passwordEncoder
     ) {
+        this.appUserRepository = appUserRepository;
         this.clientRepository = clientRepository;
         this.creditRepository = creditRepository;
         this.remboursementRepository = remboursementRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
     public void run(String... args) {
+        initialiserUtilisateurs();
+
         if (clientRepository.count() > 0) {
             return;
         }
@@ -110,6 +124,30 @@ public class DataInitializer implements CommandLineRunner {
         System.out.println("Clients crees : " + clientRepository.count());
         System.out.println("Credits crees : " + creditRepository.count());
         System.out.println("Remboursements crees : " + remboursementRepository.count());
+    }
+
+    private void initialiserUtilisateurs() {
+        if (appUserRepository.count() > 0) {
+            return;
+        }
+
+        AppUser admin = creerUtilisateur("admin", "admin@email.com", "admin123", Role.ROLE_ADMIN);
+        AppUser employe = creerUtilisateur("employe", "employe@email.com", "employe123", Role.ROLE_EMPLOYE);
+        AppUser client = creerUtilisateur("client", "client@email.com", "client123", Role.ROLE_CLIENT);
+
+        appUserRepository.saveAll(List.of(admin, employe, client));
+
+        System.out.println("Utilisateurs de test crees : admin/admin123, employe/employe123, client/client123");
+    }
+
+    private AppUser creerUtilisateur(String username, String email, String password, Role role) {
+        AppUser appUser = new AppUser();
+        appUser.setUsername(username);
+        appUser.setEmail(email);
+        appUser.setPassword(passwordEncoder.encode(password));
+        appUser.setEnabled(true);
+        appUser.setRoles(new HashSet<>(Set.of(role)));
+        return appUser;
     }
 
     private void remplirCredit(

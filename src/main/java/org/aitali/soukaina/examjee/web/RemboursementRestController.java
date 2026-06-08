@@ -1,5 +1,6 @@
 package org.aitali.soukaina.examjee.web;
 
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.aitali.soukaina.examjee.dtos.RemboursementDTO;
 import org.aitali.soukaina.examjee.services.CreditBancaireService;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/remboursements")
 @Tag(name = "Remboursements", description = "Gestion des remboursements")
+@SecurityRequirement(name = "bearerAuth")
 public class RemboursementRestController {
 
     private final CreditBancaireService creditBancaireService;
