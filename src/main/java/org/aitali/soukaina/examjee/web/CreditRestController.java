@@ -1,5 +1,6 @@
 package org.aitali.soukaina.examjee.web;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.aitali.soukaina.examjee.dtos.CreditDTO;
 import org.aitali.soukaina.examjee.dtos.RemboursementDTO;
 import org.aitali.soukaina.examjee.entities.StatutCredit;
@@ -20,6 +21,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/credits")
+@Tag(name = "Credits", description = "Gestion des credits bancaires")
 public class CreditRestController {
 
     private final CreditBancaireService creditBancaireService;
