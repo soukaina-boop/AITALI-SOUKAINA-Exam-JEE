@@ -1,6 +1,7 @@
 package org.aitali.soukaina.examjee.web;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import org.aitali.soukaina.examjee.dtos.AuthResponseDTO;
 import org.aitali.soukaina.examjee.dtos.LoginRequestDTO;
 import org.aitali.soukaina.examjee.dtos.RegisterRequestDTO;
@@ -24,12 +25,12 @@ public class AuthRestController {
     }
 
     @PostMapping("/login")
-    public AuthResponseDTO login(@RequestBody LoginRequestDTO loginRequestDTO) {
+    public AuthResponseDTO login(@Valid @RequestBody LoginRequestDTO loginRequestDTO) {
         return authService.login(loginRequestDTO);
     }
 
     @PostMapping("/register")
-    public ResponseEntity<AuthResponseDTO> register(@RequestBody RegisterRequestDTO registerRequestDTO) {
+    public ResponseEntity<AuthResponseDTO> register(@Valid @RequestBody RegisterRequestDTO registerRequestDTO) {
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(authService.register(registerRequestDTO));
     }

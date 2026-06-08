@@ -2,6 +2,7 @@ package org.aitali.soukaina.examjee.web;
 
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import org.aitali.soukaina.examjee.dtos.CreditDTO;
 import org.aitali.soukaina.examjee.dtos.RemboursementDTO;
 import org.aitali.soukaina.examjee.entities.StatutCredit;
@@ -46,7 +47,7 @@ public class CreditRestController {
     }
 
     @PostMapping
-    public ResponseEntity<CreditDTO> saveCredit(@RequestBody CreditDTO creditDTO) {
+    public ResponseEntity<CreditDTO> saveCredit(@Valid @RequestBody CreditDTO creditDTO) {
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(creditBancaireService.saveCredit(creditDTO));
     }

@@ -2,6 +2,7 @@ package org.aitali.soukaina.examjee.web;
 
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import org.aitali.soukaina.examjee.dtos.ClientDTO;
 import org.aitali.soukaina.examjee.dtos.CreditDTO;
 import org.aitali.soukaina.examjee.services.CreditBancaireService;
@@ -41,13 +42,13 @@ public class ClientRestController {
     }
 
     @PostMapping
-    public ResponseEntity<ClientDTO> saveClient(@RequestBody ClientDTO clientDTO) {
+    public ResponseEntity<ClientDTO> saveClient(@Valid @RequestBody ClientDTO clientDTO) {
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(creditBancaireService.saveClient(clientDTO));
     }
 
     @PutMapping("/{id}")
-    public ClientDTO updateClient(@PathVariable Long id, @RequestBody ClientDTO clientDTO) {
+    public ClientDTO updateClient(@PathVariable Long id, @Valid @RequestBody ClientDTO clientDTO) {
         return creditBancaireService.updateClient(id, clientDTO);
     }
 

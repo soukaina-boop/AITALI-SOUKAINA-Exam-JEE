@@ -2,6 +2,7 @@ package org.aitali.soukaina.examjee.web;
 
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import org.aitali.soukaina.examjee.dtos.RemboursementDTO;
 import org.aitali.soukaina.examjee.services.CreditBancaireService;
 import org.springframework.http.HttpStatus;
@@ -24,7 +25,7 @@ public class RemboursementRestController {
     }
 
     @PostMapping
-    public ResponseEntity<RemboursementDTO> saveRemboursement(@RequestBody RemboursementDTO remboursementDTO) {
+    public ResponseEntity<RemboursementDTO> saveRemboursement(@Valid @RequestBody RemboursementDTO remboursementDTO) {
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(creditBancaireService.saveRemboursement(remboursementDTO));
     }
